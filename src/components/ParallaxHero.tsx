@@ -152,7 +152,7 @@ export default function ParallaxHero() {
           {/* Top bar removed to prevent overlap with the actual global Navbar.tsx */}
 
           {/* Hero content */}
-          <div className="absolute left-0 right-0 bottom-[10vh] md:bottom-0 px-4 md:px-[52px] pb-4 md:pb-[52px]">
+          <div className="absolute left-0 right-0 bottom-[10vh] md:bottom-0 px-4 md:px-[52px] pb-4 md:pb-[52px] max-w-[100vw] overflow-hidden">
             <div className="fade-in" style={{
               display: "flex", alignItems: "center", gap: 14,
               marginBottom: 18,
