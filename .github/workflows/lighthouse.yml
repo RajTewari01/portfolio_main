@@ -1,36 +1,32 @@
-name: Build
+name: Lighthouse Performance
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
-  build:
-    name: Next.js Production Build
+  lighthouse:
+    name: Performance Audit
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    strategy:
-      matrix:
-        node-version: [20, 22]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
           cache: npm
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Application
+      - name: Build for Production
         run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
@@ -42,9 +38,16 @@ jobs:
           NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || 'placeholder' }}
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID || 'placeholder' }}
 
-      - name: Verify Build Artifacts
-        run: |
-          echo "Build artifacts:"
-          ls -la .next/ | head -20
-          echo "Route manifest:"
-          cat .next/routes-manifest.json | head -30 || true
+      - name: Start Production Server
+        run: npm start &
+        env:
+          PORT: 3000
+
+      - name: Wait for Server
+        run: npx wait-on http://localhost:3000 --timeout 30000
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: http://localhost:3000
+          uploadArtifacts: true

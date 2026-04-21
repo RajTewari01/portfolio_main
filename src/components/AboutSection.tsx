@@ -70,11 +70,11 @@ export default function AboutSection() {
     return () => ctx.revert();
   }, []);
 
-  // ─── SVG Mask Reveal calculation ─────────────────────────────────────
+  // ─── SVG Mask Reveal calculation (uses real DOM position) ─────────────
   const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  // This section starts after the 200vh hero section
-  const sectionStart = vh * 2;
-  const raw = map(scrollY, sectionStart - vh * 0.2, sectionStart + vh * 0.8, 0, 1);
+  const sectionEl = sectionRef.current;
+  const sectionTop = sectionEl ? sectionEl.getBoundingClientRect().top + window.scrollY : vh * 2;
+  const raw = map(scrollY, sectionTop - vh * 0.5, sectionTop + vh * 0.6, 0, 1);
   const eased = easeOutCubic(raw);
   const maskR = eased * 160;
 

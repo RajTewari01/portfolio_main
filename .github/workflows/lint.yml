@@ -1,23 +1,51 @@
-name: Static Code Analysis
+name: Lint
 
 on:
   push:
-    branches: [ "main", "staging" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  lint:
-    name: ESLint & TypeScript Checks
+  eslint:
+    name: ESLint Analysis
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
-          cache: 'npm'
+          node-version: 20
+          cache: npm
+
       - name: Install Dependencies
         run: npm ci
-      - name: Enterprise ESLint Check
-        run: npm run lint
+
+      - name: Run ESLint
+        run: npx eslint . --max-warnings 0
+
+  typecheck:
+    name: TypeScript Strict Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Validate TypeScript
+        run: npx tsc --noEmit --strict
