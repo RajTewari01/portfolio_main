@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { otpStore } from "@/lib/store";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,11 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and OTP are required." }, { status: 400 });
     }
 
-
-    // Try to get OTP from global store (for local dev)
-    const otpStore = (global as any).__OTP_STORE__;
-    
-    if (otpStore) {
+    if (otpStore.has(email)) {
       const stored = otpStore.get(email);
       if (stored) {
         if (Date.now() > stored.expires) {
@@ -24,12 +21,10 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: "Invalid OTP." }, { status: 401 });
         }
         otpStore.delete(email);
-      } else {
-         console.warn("OTP Store miss. Failing verification since we are local.");
-         return NextResponse.json({ error: "OTP Session missing or expired." }, { status: 401 });
       }
     } else {
-      return NextResponse.json({ error: "Backend memory error." }, { status: 500 });
+      console.warn("OTP Store miss. The OTP might have expired or memory reset.");
+      return NextResponse.json({ error: "Verification session missing. Please request a new code." }, { status: 401 });
     }
 
     // Generate admin session token (valid for 4 hours)

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-
-// In-memory OTP store (per server instance)
-const otpStore = new Map<string, { code: string; expires: number }>();
+import { otpStore } from "@/lib/store";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,9 +16,6 @@ export async function POST(req: NextRequest) {
 
     // Store OTP
     otpStore.set(email, { code: otp, expires: expiresAt });
-    
-    // Optional: Share globally via environment variable to support local dev HMR
-    (global as any).__OTP_STORE__ = otpStore;
 
     // Send OTP email
     const transporter = nodemailer.createTransport({
@@ -104,5 +99,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `SMTP Failed: ${error.message || "Unknown Error"}` }, { status: 500 });
   }
 }
-
-export { otpStore };
