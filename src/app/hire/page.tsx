@@ -66,7 +66,7 @@ export default function HirePage() {
           <div className="flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-6 hire-stagger">
               <div className="w-1.5 h-1.5 bg-[#C9A96E] rounded-full animate-pulse shadow-[0_0_8px_#C9A96E]" />
-              <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">Secure Channel</p>
+              <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">Available for Work</p>
             </div>
 
             <h1 className="hire-stagger font-playfair text-[clamp(40px,6vw,72px)] font-black uppercase tracking-tighter leading-[0.95] text-white">
@@ -77,7 +77,7 @@ export default function HirePage() {
             </h1>
 
             <p className="hire-stagger mt-8 text-white/50 font-light leading-relaxed max-w-md text-sm sm:text-base">
-              Whether you need a high-performance backend, a cinematic frontend, or an AI agent integration — I engineer solutions that execute perfectly. Drop a line here or connect directly.
+              Need a backend built, a mobile app shipped, or an ML pipeline integrated? I'm open for freelance and contract work. Reach out below or send a message through the form.
             </p>
 
             {/* Direct Connect - Chat Style */}
@@ -101,7 +101,7 @@ export default function HirePage() {
                 <div className="flex gap-3">
                   <div className="w-6 h-6 rounded-full bg-[#C9A96E]/20 border border-[#C9A96E]/30 shrink-0 flex items-center justify-center text-[10px] text-[#C9A96E]">N</div>
                   <div className="bg-white/10 backdrop-blur-md rounded-2xl rounded-tl-sm p-3.5 text-sm text-white/90 max-w-[90%] border border-white/5 shadow-lg leading-relaxed font-medium">
-                    We are here to help you with the next big thing in your mind! How can we assist you today?
+                    Hey! I'm available for freelance projects. What are you working on?
                   </div>
                 </div>
               </div>

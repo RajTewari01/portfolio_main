@@ -33,7 +33,7 @@ export default function AdminPage() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("nexus_admin_jwt");
+    const token = localStorage.getItem("admin_jwt");
     if (token) {
       setJwtToken(token);
       setAuthStep(2);
@@ -41,7 +41,7 @@ export default function AdminPage() {
   }, []);
 
   const fetchDynamicData = async () => {
-    setStatus("Syncing with Nexus Vault...");
+    setStatus("Loading data...");
     if (activeTab === "certificates") {
       const { data, error } = await supabase.from("certificates").select("*").order("created_at", { ascending: false });
       if (error) {
@@ -76,46 +76,46 @@ export default function AdminPage() {
   // --- Auth Handlers ---
   const handleFirebaseSignIn = async () => {
     try {
-      setStatus("Initiating Firebase Identity Protocols...");
+      setStatus("Signing in...");
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       
       const userEmail = result.user.email || "";
       if (!ALLOWED_EMAILS.includes(userEmail)) {
         await auth.signOut();
-        setStatus("UNAUTHORIZED: Global Security Lock Active.");
+        setStatus("Access denied. This account is not authorized.");
         return;
       }
 
       setEmail(userEmail);
-      setAuthStep(0); // Move to Hardware Biometrics
-      setStatus("Identity Accepted. Awaiting Hardware Passkey.");
+      setAuthStep(0);
+      setStatus("Signed in. Please verify with biometrics.");
     } catch (err: any) {
-      setStatus(`Identity Rejected: ${err.message}`);
+      setStatus(`Sign-in failed: ${err.message}`);
     }
   };
 
   const handleBiometrics = async () => {
     try {
-        setStatus("Awaiting Hardware Biometrics (TouchID / Windows Hello)...");
-        const isRegistered = localStorage.getItem("nexus_passkey_registered");
+        setStatus("Waiting for biometric verification (fingerprint / Face ID / Windows Hello)...");
+        const isRegistered = localStorage.getItem("admin_passkey_registered");
 
         if (!isRegistered) {
             // First time register to this device
             const options: PublicKeyCredentialCreationOptions = {
                 challenge: window.crypto.getRandomValues(new Uint8Array(32)),
-                rp: { name: "Nexus Terminal" },
+                rp: { name: "Portfolio Admin" },
                 user: {
                     id: window.crypto.getRandomValues(new Uint8Array(16)),
                     name: "Admin",
                     displayName: "Admin"
                 },
                 pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-                authenticatorSelection: { userVerification: "required" },
+                authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
                 timeout: 60000,
             };
             await navigator.credentials.create({ publicKey: options });
-            localStorage.setItem("nexus_passkey_registered", "true");
+            localStorage.setItem("admin_passkey_registered", "true");
         } else {
             // Verify existing
             const options: PublicKeyCredentialRequestOptions = {
@@ -126,7 +126,7 @@ export default function AdminPage() {
             await navigator.credentials.get({ publicKey: options });
         }
         
-        setStatus("Hardware Verified. Dispatching final cipher...");
+        setStatus("Biometrics verified. Sending verification code...");
         
         // Auto trigger the OTP email
         const res = await fetch("/api/admin/send-otp", {
@@ -138,17 +138,17 @@ export default function AdminPage() {
            setAuthStep(1);
            setTimeout(() => setStatus(""), 3000);
         } else {
-           setStatus("Failed to dispatch cipher.");
+           setStatus("Failed to send verification code.");
         }
     } catch (err: any) {
-        setStatus("Hardware Biometric Sequence failed or cancelled.");
+        setStatus("Biometric verification failed or was cancelled.");
     }
   };
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otp) return setStatus("Cipher code missing.");
-    setStatus("Verifying Identity Signature...");
+    if (!otp) return setStatus("Please enter the verification code.");
+    setStatus("Verifying...");
 
     const res = await fetch("/api/admin/verify-otp", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -158,18 +158,18 @@ export default function AdminPage() {
     const data = await res.json();
     if (res.ok) {
       setJwtToken(data.token);
-      localStorage.setItem("nexus_admin_jwt", data.token);
+      localStorage.setItem("admin_jwt", data.token);
       setAuthStep(2);
-      setStatus("Access Granted.");
+      setStatus("Authenticated.");
       setTimeout(() => setStatus(""), 3000);
     } else {
-      setStatus(`Access Denied: ${data.error}`);
+      setStatus(`Verification failed: ${data.error}`);
     }
   };
 
   const logout = async () => {
     await auth.signOut();
-    localStorage.removeItem("nexus_admin_jwt");
+    localStorage.removeItem("admin_jwt");
     setAuthStep(-1);
     setJwtToken("");
     setEmail("");
@@ -186,7 +186,7 @@ export default function AdminPage() {
         const { error } = await supabase.from("certificates").insert({ ...certForm, date_earned: certForm.date_earned || null, credential_url: certForm.credential_url || null, image_url: certForm.image_url || null, description: certForm.description || null });
         if (error) throw error;
       }
-      setStatus("Certificate Vault updated.");
+      setStatus("Certificate saved.");
       setEditingId(null);
       setCertForm({ title: "", issuer: "Anthropic", category: "anthropic", date_earned: "", credential_url: "", image_url: "", description: "" });
       fetchDynamicData();
@@ -202,7 +202,7 @@ export default function AdminPage() {
         const { error } = await supabase.from("projects").insert(projForm);
         if (error) throw error;
       }
-      setStatus("Project Vault updated.");
+      setStatus("Project saved.");
       setEditingId(null);
       setProjForm({ name: "", description: "", github_url: "" });
       fetchDynamicData();
@@ -213,7 +213,7 @@ export default function AdminPage() {
     if (!confirm("Are you sure? This delete is permanent.")) return;
     const { error } = await supabase.from(table).delete().eq("id", id);
     if (error) { setStatus(`Delete error: ${error.message}`); return; }
-    setStatus("Asset purged.");
+    setStatus("Deleted.");
     fetchDynamicData();
   };
 
@@ -225,13 +225,13 @@ export default function AdminPage() {
     return (
       <div style={{ minHeight: "100vh", background: "#050505", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-syne), sans-serif", color: "white" }}>
         <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,169,110,0.15)", borderRadius: 16, padding: 48, display: "flex", flexDirection: "column", gap: 24, width: 420, boxShadow: "0 20px 80px rgba(0,0,0,0.8)", backdropFilter: "blur(20px)" }}>
-          <h1 style={{ fontFamily: "var(--font-playfair), serif", fontSize: 32, fontWeight: 700, color: "#C9A96E", textAlign: "center", letterSpacing: "-1px" }}>Nexus <span style={{ fontStyle: "italic", color: "white" }}>Admin.</span></h1>
+          <h1 style={{ fontFamily: "var(--font-playfair), serif", fontSize: 32, fontWeight: 700, color: "#C9A96E", textAlign: "center", letterSpacing: "-1px" }}>Admin <span style={{ fontStyle: "italic", color: "white" }}>Panel.</span></h1>
           
           {status && <p style={{ color: "#ef4444", textAlign: "center", fontSize: 13, fontFamily: "monospace", letterSpacing: "1px" }}>{status}</p>}
 
           {authStep === -1 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", textAlign: "center", marginBottom: 8 }}>Tier 1: Global Identity Protocol</p>
+              <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", textAlign: "center", marginBottom: 8 }}>Step 1: Sign in with Google</p>
               <button onClick={handleFirebaseSignIn} style={{ ...btnPrimary, background: "white", color: "black", display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
                 <svg width="20" height="20" viewBox="0 0 48 48">
                   <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -246,23 +246,23 @@ export default function AdminPage() {
 
           {authStep === 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", textAlign: "center", marginBottom: 8 }}>Tier 2: Hardware WebAuthn</p>
+              <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", textAlign: "center", marginBottom: 8 }}>Step 2: Biometric Verification</p>
               <div style={{...ghostInputStyle, opacity: 0.5, textAlign: "center"}}>{email}</div>
               <button onClick={handleBiometrics} style={btnPrimary}>
-                SCAN BIOMETRICS / PASSKEY
+                VERIFY WITH FINGERPRINT / FACE ID
               </button>
             </div>
           )}
 
           {authStep === 1 && (
             <form onSubmit={handleVerifyOtp} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", textAlign: "center", marginBottom: 8 }}>Tier 3: Emailed Cipher</p>
+              <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "1px", textAlign: "center", marginBottom: 8 }}>Step 3: Email Verification Code</p>
               <input type="text" value={otp} onChange={e => setOtp(e.target.value)} placeholder="6-Digit Code" required autoFocus style={{ ...ghostInputStyle, textAlign: "center", fontSize: 24, letterSpacing: "8px" }} />
-              <button type="submit" style={btnPrimary}>VERIFY AUTHORITY</button>
+              <button type="submit" style={btnPrimary}>VERIFY CODE</button>
             </form>
           )}
 
-          <a href="/" style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, textAlign: "center", marginTop: 16, fontFamily: "monospace", textDecoration: "none" }}>← Return to Grid</a>
+          <a href="/" style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, textAlign: "center", marginTop: 16, fontFamily: "monospace", textDecoration: "none" }}>← Back to site</a>
         </div>
       </div>
     );
@@ -276,11 +276,11 @@ export default function AdminPage() {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40, borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: 24 }}>
           <h1 style={{ fontFamily: "var(--font-playfair), serif", fontSize: 32, fontWeight: 700, letterSpacing: "-1px" }}>
-            <span style={{ color: "#C9A96E" }}>Command</span> Center.
+            <span style={{ color: "#C9A96E" }}>Admin</span> Dashboard.
           </h1>
           <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-            <span style={{ fontFamily: "monospace", fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "1.5px" }}>SYS: SECURE</span>
-            <button onClick={logout} style={{ ...btnPrimary, background: "rgba(239,68,68,0.1)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)" }}>TERMINATE SESSION</button>
+            <span style={{ fontFamily: "monospace", fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "1.5px" }}>AUTHENTICATED</span>
+            <button onClick={logout} style={{ ...btnPrimary, background: "rgba(239,68,68,0.1)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)" }}>LOG OUT</button>
           </div>
         </div>
 
@@ -290,8 +290,8 @@ export default function AdminPage() {
 
         {/* Tab Navigation */}
         <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
-          <button onClick={() => setActiveTab("certificates")} style={{ ...tabBtn, background: activeTab === "certificates" ? "rgba(201,169,110,0.15)" : "transparent", color: activeTab === "certificates" ? "#C9A96E" : "rgba(255,255,255,0.4)", borderColor: activeTab === "certificates" ? "rgba(201,169,110,0.3)" : "rgba(255,255,255,0.1)" }}>CERTIFICATES VAULT</button>
-          <button onClick={() => setActiveTab("projects")} style={{ ...tabBtn, background: activeTab === "projects" ? "rgba(201,169,110,0.15)" : "transparent", color: activeTab === "projects" ? "#C9A96E" : "rgba(255,255,255,0.4)", borderColor: activeTab === "projects" ? "rgba(201,169,110,0.3)" : "rgba(255,255,255,0.1)" }}>PROJECTS VAULT</button>
+          <button onClick={() => setActiveTab("certificates")} style={{ ...tabBtn, background: activeTab === "certificates" ? "rgba(201,169,110,0.15)" : "transparent", color: activeTab === "certificates" ? "#C9A96E" : "rgba(255,255,255,0.4)", borderColor: activeTab === "certificates" ? "rgba(201,169,110,0.3)" : "rgba(255,255,255,0.1)" }}>CERTIFICATES</button>
+          <button onClick={() => setActiveTab("projects")} style={{ ...tabBtn, background: activeTab === "projects" ? "rgba(201,169,110,0.15)" : "transparent", color: activeTab === "projects" ? "#C9A96E" : "rgba(255,255,255,0.4)", borderColor: activeTab === "projects" ? "rgba(201,169,110,0.3)" : "rgba(255,255,255,0.1)" }}>PROJECTS</button>
         </div>
 
         {/* Tab Content: Certificates */}
@@ -311,7 +311,7 @@ export default function AdminPage() {
               </div>
               <textarea placeholder="Description" rows={2} value={certForm.description} onChange={e => setCertForm({...certForm, description: e.target.value})} style={{ ...ghostInputStyle, width: "100%", resize: "none", marginBottom: 24 }} />
               <div style={{ display: "flex", gap: 12 }}>
-                <button onClick={handleSaveCert} style={btnPrimary}>{editingId ? "UPDATE CERTIFICATE" : "INJECT CERTIFICATE"}</button>
+                <button onClick={handleSaveCert} style={btnPrimary}>{editingId ? "UPDATE" : "ADD CERTIFICATE"}</button>
                 {editingId && <button onClick={() => { setEditingId(null); setCertForm({title:"", issuer:"Anthropic", category:"anthropic", date_earned:"", credential_url:"", image_url:"", description:""}); }} style={btnSecondary}>CANCEL</button>}
               </div>
             </div>
@@ -336,14 +336,14 @@ export default function AdminPage() {
         {activeTab === "projects" && (
           <div>
             <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,169,110,0.15)", borderRadius: 12, padding: 32, marginBottom: 40 }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, color: "#C9A96E", marginBottom: 24 }}>{editingId ? "Modify Project" : "New Project Deploy"}</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, color: "#C9A96E", marginBottom: 24 }}>{editingId ? "Edit Project" : "Add Project"}</h2>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
                 <input placeholder="Project Name *" value={projForm.name} onChange={e => setProjForm({...projForm, name: e.target.value})} style={ghostInputStyle} />
                 <input placeholder="GitHub URL *" value={projForm.github_url} onChange={e => setProjForm({...projForm, github_url: e.target.value})} style={ghostInputStyle} />
               </div>
-              <textarea placeholder="Architecture Description" rows={3} value={projForm.description} onChange={e => setProjForm({...projForm, description: e.target.value})} style={{ ...ghostInputStyle, width: "100%", resize: "none", marginBottom: 24 }} />
+              <textarea placeholder="Description" rows={3} value={projForm.description} onChange={e => setProjForm({...projForm, description: e.target.value})} style={{ ...ghostInputStyle, width: "100%", resize: "none", marginBottom: 24 }} />
               <div style={{ display: "flex", gap: 12 }}>
-                <button onClick={handleSaveProj} style={btnPrimary}>{editingId ? "OVERWRITE PROJECT" : "DEPLOY PROJECT"}</button>
+                <button onClick={handleSaveProj} style={btnPrimary}>{editingId ? "UPDATE" : "ADD PROJECT"}</button>
                 {editingId && <button onClick={() => { setEditingId(null); setProjForm({name:"", description:"", github_url:""}); }} style={btnSecondary}>CANCEL</button>}
               </div>
             </div>

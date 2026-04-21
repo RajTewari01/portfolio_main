@@ -32,53 +32,54 @@ export async function POST(req: NextRequest) {
     });
 
     await transporter.sendMail({
-      from: `"NEXUS SECURITY" <${process.env.EMAIL_USER}>`,
-      to: email, // ensure we mail to the requested email (admin)
-      subject: `[ACTION REQUIRED] Nexus Admin Clearance Code: ${otp}`,
+      from: `"Portfolio Admin" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: `Your verification code: ${otp}`,
       html: `
         <!DOCTYPE html>
         <html>
         <head>
           <style>
-            @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
           </style>
         </head>
-        <body style="margin: 0; padding: 0; background-color: #080808; color: #ffffff; font-family: 'Space Grotesk', sans-serif; -webkit-font-smoothing: antialiased;">
-          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #080808; padding: 40px 20px;">
+        <body style="margin: 0; padding: 0; background-color: #f5f5f5; color: #333; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
             <tr>
               <td align="center">
-                <table width="100%" max-width="500px" cellpadding="0" cellspacing="0" style="max-width: 500px; background-color: #0c0a08; border: 1px solid rgba(201,169,110,0.15); border-radius: 12px; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8); overflow: hidden;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 480px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">
                   
                   <!-- HEADER -->
                   <tr>
-                    <td style="padding: 40px 40px; border-bottom: 1px solid rgba(201,169,110,0.1); background: radial-gradient(circle at top, rgba(201,169,110,0.08) 0%, transparent 100%); text-align: center;">
-                      <h1 style="font-family: 'Playfair Display', serif; font-weight: 700; margin: 0; font-size: 28px; letter-spacing: -1px; color: #C9A96E;">Access<br/><span style="font-style: italic; color: #fff;">Clearance.</span></h1>
+                    <td style="padding: 32px 40px; border-bottom: 1px solid #eee; text-align: left;">
+                      <h1 style="font-family: 'Inter', sans-serif; font-weight: 700; margin: 0; font-size: 20px; color: #111;">Admin Verification</h1>
+                      <p style="margin: 4px 0 0 0; font-size: 13px; color: #888;">biswadeeptewari.dev</p>
                     </td>
                   </tr>
 
                   <!-- BODY -->
                   <tr>
                     <td style="padding: 40px; text-align: center;">
-                      <p style="margin: 0 0 24px 0; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; letter-spacing: 0.5px; font-family: 'Space Grotesk', sans-serif;">
-                        An authentication request was initiated for the primary Nexus terminal. Provide the following cipher to confirm authority.
+                      <p style="margin: 0 0 24px 0; font-size: 14px; color: #555; line-height: 1.6; text-align: left;">
+                        A sign-in attempt was made to the admin panel. Use the code below to complete verification.
                       </p>
                       
                       <!-- OTP BOX -->
-                      <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(201, 169, 110, 0.2); padding: 24px 40px; border-radius: 8px; margin: 0 auto; display: inline-block;">
-                        <span style="font-family: monospace; font-size: 38px; font-weight: 700; letter-spacing: 16px; color: #C9A96E; text-shadow: 0 0 24px rgba(201,169,110,0.3); margin-right: -16px;">${otp}</span>
+                      <div style="background: #f8f8f8; border: 1px solid #e5e5e5; padding: 20px 40px; border-radius: 8px; margin: 0 auto; display: inline-block;">
+                        <span style="font-family: 'Courier New', monospace; font-size: 32px; font-weight: 700; letter-spacing: 12px; color: #111; margin-right: -12px;">${otp}</span>
                       </div>
 
-                      <p style="margin: 30px 0 0 0; font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1.5px; font-family: monospace;">
-                        Cipher invalidates in <span style="color: #C9A96E;">5 minutes</span>.
+                      <p style="margin: 24px 0 0 0; font-size: 12px; color: #999;">
+                        This code expires in <strong style="color: #333;">5 minutes</strong>. If you didn't request this, you can ignore this email.
                       </p>
                     </td>
                   </tr>
 
                   <!-- FOOTER -->
                   <tr>
-                    <td style="padding: 24px 40px; background-color: #050505; border-top: 1px solid rgba(255,255,255,0.03); text-align: center;">
-                      <p style="margin: 0; font-size: 9px; color: rgba(255,255,255,0.2); font-family: monospace; text-transform: uppercase; letter-spacing: 2px;">
-                        01 THE ARCHITECT · STRICT ZERO-TRUST
+                    <td style="padding: 20px 40px; background-color: #fafafa; border-top: 1px solid #eee; text-align: center;">
+                      <p style="margin: 0; font-size: 11px; color: #bbb;">
+                        Biswadeep Tewari &middot; Portfolio Admin
                       </p>
                     </td>
                   </tr>
