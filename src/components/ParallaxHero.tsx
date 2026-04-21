@@ -154,7 +154,7 @@ export default function ParallaxHero() {
           {/* Hero content */}
           <div style={{
             position: "absolute", bottom: 0, left: 0, right: 0,
-            padding: "0 52px 52px",
+            padding: "0 clamp(16px, 5vw, 52px) clamp(24px, 5vw, 52px)",
           }}>
             <div className="fade-in" style={{
               display: "flex", alignItems: "center", gap: 14,

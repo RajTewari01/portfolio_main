@@ -174,7 +174,7 @@ export default function ProjectsSection() {
             ref={headerRef}
             style={{
               fontFamily: "var(--font-syne), sans-serif",
-              fontSize: "clamp(48px, 10vw, 100px)",
+              fontSize: "clamp(36px, 8vw, 100px)",
               fontWeight: 900, letterSpacing: "-0.08em",
               lineHeight: 0.85, textTransform: "uppercase",
               transformOrigin: "left center",
@@ -194,7 +194,7 @@ export default function ProjectsSection() {
         </div>
 
         {/* Project List */}
-        <div style={{ display: "flex", flexDirection: "column", perspective: 1200 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0, perspective: 1200 }}>
           {projects.map((p, index) => (
             <a
               key={p.id}
@@ -203,9 +203,11 @@ export default function ProjectsSection() {
               rel="noreferrer"
               className="project-row"
               style={{
-                display: "grid", gridTemplateColumns: "60px 1fr 1fr 48px",
-                gap: 24, alignItems: "center",
-                padding: "32px 0", position: "relative",
+                display: "grid",
+                gridTemplateColumns: "48px 1fr 48px",
+                gap: "12px 16px",
+                alignItems: "start",
+                padding: "28px 0", position: "relative",
                 textDecoration: "none", color: "inherit",
                 borderTop: "1px solid rgba(255,255,255,0.04)",
                 transition: "all 0.5s",
@@ -217,31 +219,34 @@ export default function ProjectsSection() {
                 fontFamily: "monospace", fontSize: 12, color: "rgba(255,255,255,0.5)",
                 background: "rgba(0,0,0,0.5)", backdropFilter: "blur(8px)",
                 padding: "6px 10px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.1)",
+                textAlign: "center",
               }}>0{index + 1}</span>
 
-              <h3 style={{
-                fontFamily: "var(--font-syne), sans-serif",
-                fontSize: "clamp(28px, 4.5vw, 52px)",
-                fontWeight: 800, letterSpacing: "-0.04em",
-                textTransform: "uppercase", color: "rgba(255,255,255,0.85)",
-                lineHeight: 0.85, transition: "transform 0.5s",
-              }}>{p.name}</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <h3 style={{
+                  fontFamily: "var(--font-syne), sans-serif",
+                  fontSize: "clamp(22px, 4vw, 52px)",
+                  fontWeight: 800, letterSpacing: "-0.04em",
+                  textTransform: "uppercase", color: "rgba(255,255,255,0.85)",
+                  lineHeight: 0.9, transition: "transform 0.5s",
+                }}>{p.name}</h3>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <p style={{
-                  fontSize: 13, color: "rgba(255,255,255,0.6)", fontWeight: 300,
-                  lineHeight: 1.6,
-                  background: "rgba(0,0,0,0.4)", backdropFilter: "blur(8px)",
-                  padding: "12px 16px", borderRadius: 8,
-                  border: "1px solid rgba(255,255,255,0.05)",
+                  fontSize: "clamp(11px, 1.5vw, 13px)", color: "rgba(255,255,255,0.55)", fontWeight: 300,
+                  lineHeight: 1.7,
+                  background: "linear-gradient(135deg, rgba(10,10,10,0.7), rgba(20,18,14,0.6))",
+                  backdropFilter: "blur(12px)",
+                  padding: "14px 18px", borderRadius: 10,
+                  border: "1px solid rgba(201,169,110,0.08)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
                 }}>{p.description}</p>
               </div>
 
               <div style={{
-                width: 40, height: 40, borderRadius: "50%",
-                border: "1px solid rgba(255,255,255,0.1)",
+                width: 36, height: 36, borderRadius: "50%",
+                border: "1px solid rgba(201,169,110,0.2)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18, fontWeight: 700,
+                fontSize: 16, fontWeight: 700, color: "rgba(201,169,110,0.6)",
                 transition: "all 0.5s", transform: "rotate(-45deg)",
               }}>→</div>
             </a>

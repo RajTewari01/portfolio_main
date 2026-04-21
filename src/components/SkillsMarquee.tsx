@@ -2,55 +2,60 @@
 
 import { useRef, useEffect, useState } from "react";
 
-// ─── Math utils ─────────────────────────────────────────────────────────
-const clamp = (v: number, a: number, b: number) => Math.min(Math.max(v, a), b);
-const mapR = (v: number, a: number, b: number, c: number, d: number) => c + (d - c) * clamp((v - a) / (b - a), 0, 1);
-
 const GRAIN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E")`;
 
 const ROWS = [
   {
     text: "PYTHON · DART · KOTLIN · FLUTTER · FASTAPI · DJANGO · PYTORCH · LANGCHAIN · DOCKER · K8S · ",
-    size: 68, italic: false, prominent: false, weight: 400, speed: -1.5,
+    size: 68, mobilSize: 36, italic: false, prominent: false, weight: 400, speed: 35, reverse: true,
   },
   {
     text: "REACT · TYPESCRIPT · TAILWIND · GSAP · TENSORFLOW · SELENIUM · FIGMA · CYTHON · VECTOR DBS · ",
-    size: 50, italic: true, prominent: true, weight: 700, speed: 0.85,
+    size: 50, mobilSize: 28, italic: true, prominent: true, weight: 700, speed: 25, reverse: false,
   },
   {
     text: "AWS · NEXT.JS · THREE.JS · STABLE DIFFUSION · POSTGRESQL · RAG SYSTEMS · LANGRAPH · GLSL · FIREBASE · ",
-    size: 60, italic: false, prominent: false, weight: 400, speed: -1.1,
+    size: 60, mobilSize: 32, italic: false, prominent: false, weight: 400, speed: 30, reverse: true,
   },
 ];
 
 export default function SkillsMarquee() {
-  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [scrollY, setScrollY] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
+  // Use IntersectionObserver to trigger animation only when in view
   useEffect(() => {
-    let raf: number;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => setScrollY(window.scrollY));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); };
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
-  // Calculate offsets based on scroll
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const sectionStart = vh * 7; // approximate position
-  const offsets = ROWS.map(r =>
-    mapR(scrollY, sectionStart - vh, sectionStart + vh * 2, 0, r.speed * 500)
-  );
-
   return (
-    <section style={{
-      position: "relative", height: "150vh",
-      background: "#080808", overflow: "hidden",
-      display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center",
-    }}>
+    <section
+      ref={sectionRef}
+      style={{
+        position: "relative", minHeight: "80vh",
+        background: "#080808", overflow: "hidden",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: "80px 0",
+      }}
+    >
+      {/* CSS keyframes for infinite marquee */}
+      <style>{`
+        @keyframes marquee-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-right {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+      `}</style>
+
       {/* Grain */}
       <div style={{
         position: "absolute", inset: 0,
@@ -79,14 +84,13 @@ export default function SkillsMarquee() {
         <span>TECH STACK</span>
       </div>
 
-      {/* The three rows */}
+      {/* The three rows — pure CSS infinite marquee */}
       {ROWS.map((row, i) => (
         <div key={i} style={{ overflow: "hidden", width: "100%", padding: "6px 0" }}>
           <div
-            ref={el => { rowRefs.current[i] = el; }}
             style={{
               fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-              fontSize: row.size,
+              fontSize: `clamp(${row.mobilSize}px, 5vw, ${row.size}px)`,
               fontWeight: row.weight,
               fontStyle: row.italic ? "italic" : "normal",
               color: row.prominent
@@ -95,18 +99,21 @@ export default function SkillsMarquee() {
               letterSpacing: "-0.02em",
               whiteSpace: "nowrap",
               willChange: "transform",
-              padding: "0 80px",
-              transform: `translateX(${offsets[i]}px)`,
+              display: "inline-block",
+              animation: isVisible
+                ? `${row.reverse ? "marquee-left" : "marquee-right"} ${row.speed}s linear infinite`
+                : "none",
             }}
           >
-            {row.text.repeat(5)}
+            {/* Duplicate the text so the second copy seamlessly follows the first */}
+            {row.text.repeat(6)}{row.text.repeat(6)}
           </div>
         </div>
       ))}
 
       {/* Speed hints */}
       <div style={{
-        position: "absolute", right: 40, bottom: 120,
+        position: "absolute", right: 40, bottom: 80,
         display: "flex", flexDirection: "column", gap: 8,
         fontFamily: "monospace",
         fontSize: 8, color: "rgba(255,255,255,0.2)",
