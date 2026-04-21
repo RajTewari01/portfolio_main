@@ -1,0 +1,32 @@
+name: Production Build
+
+on:
+  push:
+    branches: [ "main", "staging" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Compiling Nexus App Route
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      - name: Install Environment
+        run: npm ci
+      - name: Enforce Strict Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://mock.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: mock_key
+          NEXT_PUBLIC_FIREBASE_API_KEY: mock_key
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: mock_domain
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: mock_project
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: mock_bucket
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: mock_sender
+          NEXT_PUBLIC_FIREBASE_APP_ID: mock_app
