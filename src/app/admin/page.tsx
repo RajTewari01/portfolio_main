@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase, Certificate, Project } from "@/lib/supabase";
 import { auth } from "@/lib/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 
 const ALLOWED_EMAILS = ["tewari765@gmail.com", "mericans24@gmail.com"];
 
@@ -37,7 +37,26 @@ export default function AdminPage() {
     if (token) {
       setJwtToken(token);
       setAuthStep(2);
+      return;
     }
+    // Handle redirect result (for mobile sign-in)
+    getRedirectResult(auth).then((result) => {
+      if (result?.user) {
+        const userEmail = result.user.email || "";
+        if (!ALLOWED_EMAILS.includes(userEmail)) {
+          auth.signOut();
+          setStatus("Access denied. This account is not authorized.");
+          return;
+        }
+        setEmail(userEmail);
+        setAuthStep(0);
+        setStatus("Signed in. Please verify with biometrics.");
+      }
+    }).catch((err) => {
+      if (err.code !== "auth/popup-closed-by-user") {
+        setStatus(`Sign-in failed: ${err.message}`);
+      }
+    });
   }, []);
 
   const fetchDynamicData = async () => {
@@ -78,6 +97,14 @@ export default function AdminPage() {
     try {
       setStatus("Signing in...");
       const provider = new GoogleAuthProvider();
+      
+      // Use redirect on mobile (popup breaks on mobile browsers)
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        await signInWithRedirect(auth, provider);
+        return; // Page will reload, result handled in useEffect
+      }
+      
       const result = await signInWithPopup(auth, provider);
       
       const userEmail = result.user.email || "";
