@@ -201,7 +201,7 @@ export default function ProjectsSection() {
               href={p.github_url}
               target="_blank"
               rel="noreferrer"
-              className="project-row grid grid-cols-[40px_1fr_40px] md:grid-cols-[60px_1fr_60px] gap-x-4 md:gap-x-8 gap-y-3 items-start md:items-center"
+              className="project-row grid grid-cols-[40px_1fr_40px] md:grid-cols-[60px_minmax(auto,400px)_1fr_60px] gap-x-4 md:gap-x-8 gap-y-3 items-start md:items-center"
               style={{
                 padding: "28px 0", position: "relative",
                 textDecoration: "none", color: "inherit",
@@ -218,27 +218,25 @@ export default function ProjectsSection() {
                 textAlign: "center",
               }}>0{index + 1}</span>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8 w-full">
-                <h3 className="md:w-1/3" style={{
-                  fontFamily: "var(--font-syne), sans-serif",
-                  fontSize: "clamp(22px, 4vw, 52px)",
-                  fontWeight: 800, letterSpacing: "-0.04em",
-                  textTransform: "uppercase", color: "rgba(255,255,255,0.85)",
-                  lineHeight: 0.9, transition: "transform 0.5s",
-                }}>{p.name}</h3>
+              <h3 className="col-start-2 col-end-3 md:col-start-2 md:col-end-3" style={{
+                fontFamily: "var(--font-syne), sans-serif",
+                fontSize: "clamp(22px, 4vw, 52px)",
+                fontWeight: 800, letterSpacing: "-0.04em",
+                textTransform: "uppercase", color: "rgba(255,255,255,0.85)",
+                lineHeight: 0.9, transition: "transform 0.5s",
+              }}>{p.name}</h3>
 
-                <p className="md:w-2/3" style={{
-                  fontSize: "clamp(11px, 1.5vw, 13px)", color: "rgba(255,255,255,0.55)", fontWeight: 300,
-                  lineHeight: 1.7,
-                  background: "linear-gradient(135deg, rgba(10,10,10,0.7), rgba(20,18,14,0.6))",
-                  backdropFilter: "blur(12px)",
-                  padding: "14px 18px", borderRadius: 10,
-                  border: "1px solid rgba(201,169,110,0.08)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
-                }}>{p.description}</p>
-              </div>
+              <p className="col-start-2 col-end-4 md:col-start-3 md:col-end-4" style={{
+                fontSize: "clamp(11px, 1.5vw, 13px)", color: "rgba(255,255,255,0.55)", fontWeight: 300,
+                lineHeight: 1.7,
+                background: "linear-gradient(135deg, rgba(10,10,10,0.7), rgba(20,18,14,0.6))",
+                backdropFilter: "blur(12px)",
+                padding: "14px 18px", borderRadius: 10,
+                border: "1px solid rgba(201,169,110,0.08)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
+              }}>{p.description}</p>
 
-              <div style={{
+              <div className="col-start-3 col-end-4 md:col-start-4 md:col-end-5 justify-self-end" style={{
                 width: 36, height: 36, borderRadius: "50%",
                 border: "1px solid rgba(201,169,110,0.2)",
                 display: "flex", alignItems: "center", justifyContent: "center",

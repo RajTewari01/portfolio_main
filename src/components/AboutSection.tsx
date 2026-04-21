@@ -25,7 +25,6 @@ export default function AboutSection() {
   const maskWrapRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-  const [maskProgress, setMaskProgress] = useState(0);
 
   // ─── GSAP animations ────────────────────────────────────────────────
   useEffect(() => {
@@ -60,24 +59,31 @@ export default function AboutSection() {
           }
         );
       }
-      // Mask reveal via ScrollTrigger (works on all devices)
-      if (maskWrapRef.current) {
+      // Mask reveal via ScrollTrigger (works on all devices, direct DOM mutation for 60fps)
+      if (maskWrapRef.current && maskRef.current) {
+        // Initial state
+        maskRef.current.style.clipPath = `circle(0vmin at 50% 50%)`;
+        maskRef.current.style.opacity = "0";
+
         ScrollTrigger.create({
           trigger: maskWrapRef.current,
           start: "top 80%",
           end: "top -20%",
           scrub: true,
-          onUpdate: (self) => setMaskProgress(self.progress),
+          onUpdate: (self) => {
+            const p = self.progress;
+            const r = easeOutCubic(p) * 160;
+            if (maskRef.current) {
+              maskRef.current.style.clipPath = `circle(${r}vmin at 50% 50%)`;
+              maskRef.current.style.opacity = map(p, 0, 0.05, 0, 1).toString();
+            }
+          },
         });
       }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
-
-  // ─── Mask radius from GSAP progress ──────────────────────────────────
-  const eased = easeOutCubic(maskProgress);
-  const maskR = eased * 160;
 
   return (
     <section id="about" ref={sectionRef} style={{ position: "relative" }}>
@@ -112,8 +118,8 @@ export default function AboutSection() {
           ref={maskRef}
           style={{
             position: "absolute", inset: 0,
-            clipPath: `circle(${maskR}vmin at 50% 50%)`,
-            opacity: map(maskProgress, 0, 0.05, 0, 1),
+            clipPath: `circle(0vmin at 50% 50%)`,
+            opacity: 0,
             willChange: "clip-path, opacity",
           }}
         >
