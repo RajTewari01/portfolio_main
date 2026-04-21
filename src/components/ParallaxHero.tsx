@@ -396,14 +396,19 @@ export default function ParallaxHero() {
             </div>
           </div>
 
-          {/* Image — hidden on very small phones, visible on larger screens */}
-          <div className="hidden md:block" style={{
-            flex: "0 0 40%", margin: "40px 0 80px",
-            borderRadius: "12px 0 0 12px", overflow: "hidden",
-            position: "relative",
+          {/* Image — compact on mobile, sidebar on desktop */}
+          <div className="w-full md:w-auto mx-4 md:mx-0 mb-4 md:mb-0 rounded-xl md:rounded-none md:rounded-l-xl overflow-hidden relative" style={{
+            flex: "0 0 40%",
+            maxHeight: "200px",
             boxShadow: "-20px 0 60px rgba(0,0,0,0.12)",
           }}>
+            <style>{`
+              @media (min-width: 768px) {
+                .architect-img-wrap { max-height: none !important; margin: 40px 0 80px !important; }
+              }
+            `}</style>
             <Image src="/profile.jpg" alt="Biswadeep Tewari" width={800} height={600}
+              className="architect-img-wrap"
               style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
             />
             <div style={{
