@@ -141,7 +141,8 @@ export default function AboutSection() {
             position: "absolute", inset: 0,
             display: "flex", flexDirection: "column",
             alignItems: "center", justifyContent: "center",
-            padding: "0 48px", textAlign: "center",
+            padding: "0 24px", textAlign: "center",
+            width: "100%", boxSizing: "border-box"
           }}>
             <div style={{
               display: "flex", alignItems: "center", gap: 10,
@@ -160,6 +161,10 @@ export default function AboutSection() {
               lineHeight: 1.0, letterSpacing: "-0.025em",
               textShadow: "0 4px 48px rgba(0,0,0,0.6)",
               marginBottom: 32,
+              width: "100%",
+              overflowWrap: "break-word",
+              wordWrap: "break-word",
+              hyphens: "auto"
             }}>
               Building<br />
               <em style={{ fontWeight: 400, color: "#C9A96E" }}>The Future</em><br />
