@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase, Certificate, Project } from "@/lib/supabase";
 import { auth } from "@/lib/firebase";
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, onAuthStateChanged } from "firebase/auth";
 
 const ALLOWED_EMAILS = ["tewari765@gmail.com", "mericans24@gmail.com"];
 
@@ -39,10 +39,11 @@ export default function AdminPage() {
       setAuthStep(2);
       return;
     }
-    // Handle redirect result (for mobile sign-in)
-    getRedirectResult(auth).then((result) => {
-      if (result?.user) {
-        const userEmail = result.user.email || "";
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // Ensure we don't trigger if we are already in Biometric or OTP steps
+      if (user) {
+        if (authStep > -1) return; // Already processed
+        const userEmail = user.email || "";
         if (!ALLOWED_EMAILS.includes(userEmail)) {
           auth.signOut();
           setStatus("Access denied. This account is not authorized.");
@@ -52,12 +53,10 @@ export default function AdminPage() {
         setAuthStep(0);
         setStatus("Signed in. Please verify with biometrics.");
       }
-    }).catch((err) => {
-      if (err.code !== "auth/popup-closed-by-user") {
-        setStatus(`Sign-in failed: ${err.message}`);
-      }
     });
-  }, []);
+
+    return () => unsubscribe();
+  }, [authStep]);
 
   const fetchDynamicData = async () => {
     setStatus("Loading data...");
