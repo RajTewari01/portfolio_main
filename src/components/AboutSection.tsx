@@ -25,6 +25,13 @@ export default function AboutSection() {
   const maskWrapRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // ─── GSAP animations ────────────────────────────────────────────────
   useEffect(() => {
@@ -59,31 +66,17 @@ export default function AboutSection() {
           }
         );
       }
-      // Mask reveal via ScrollTrigger (works on all devices, direct DOM mutation for 60fps)
-      if (maskWrapRef.current && maskRef.current) {
-        // Initial state
-        maskRef.current.style.clipPath = `circle(0vmin at 50% 50%)`;
-        maskRef.current.style.opacity = "0";
-
-        ScrollTrigger.create({
-          trigger: maskWrapRef.current,
-          start: "top 80%",
-          end: "top -20%",
-          scrub: true,
-          onUpdate: (self) => {
-            const p = self.progress;
-            const r = easeOutCubic(p) * 160;
-            if (maskRef.current) {
-              maskRef.current.style.clipPath = `circle(${r}vmin at 50% 50%)`;
-              maskRef.current.style.opacity = map(p, 0, 0.05, 0, 1).toString();
-            }
-          },
-        });
       }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
+  // ─── SVG Mask Reveal calculation (native math) ───────────────────────
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  const S1_S2_END = vh * 2; // Matches height of ParallaxHero (200vh)
+  const maskP = map(scrollY, S1_S2_END - vh * 0.2, S1_S2_END + vh * 0.6, 0, 1);
+  const maskR = easeOutCubic(maskP) * 160;
 
   return (
     <section id="about" ref={sectionRef} style={{ position: "relative" }}>
@@ -118,8 +111,8 @@ export default function AboutSection() {
           ref={maskRef}
           style={{
             position: "absolute", inset: 0,
-            clipPath: `circle(0vmin at 50% 50%)`,
-            opacity: 0,
+            clipPath: `circle(${maskR}vmin at 50% 50%)`,
+            opacity: map(maskP, 0, 0.05, 0, 1),
             willChange: "clip-path, opacity",
           }}
         >

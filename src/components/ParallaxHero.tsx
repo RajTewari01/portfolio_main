@@ -192,7 +192,8 @@ export default function ParallaxHero() {
               ref={subtextRef}
               className="fade-in fd3"
               style={{
-                color: "rgba(255,255,255,0.9)", fontSize: 14, maxWidth: 520, minHeight: 50,
+                color: "rgba(255,255,255,0.9)", fontSize: 14, minHeight: 50,
+                width: "100%", maxWidth: 520, boxSizing: "border-box", wordBreak: "break-word",
                 fontWeight: 300, lineHeight: 1.7,
                 background: "rgba(0,0,0,0.3)", backdropFilter: "blur(12px)",
                 padding: "12px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.05)",

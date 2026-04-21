@@ -201,7 +201,7 @@ export default function ProjectsSection() {
               href={p.github_url}
               target="_blank"
               rel="noreferrer"
-              className="project-row grid grid-cols-[40px_1fr_40px] md:grid-cols-[60px_minmax(auto,400px)_1fr_60px] gap-x-4 md:gap-x-8 gap-y-3 items-start md:items-center"
+              className="project-row grid grid-cols-[40px_1fr_40px] md:grid-cols-[60px_1fr_1fr_60px] gap-x-4 md:gap-x-8 gap-y-3 items-start md:items-center"
               style={{
                 padding: "28px 0", position: "relative",
                 textDecoration: "none", color: "inherit",
@@ -224,6 +224,7 @@ export default function ProjectsSection() {
                 fontWeight: 800, letterSpacing: "-0.04em",
                 textTransform: "uppercase", color: "rgba(255,255,255,0.85)",
                 lineHeight: 0.9, transition: "transform 0.5s",
+                wordBreak: "break-word",
               }}>{p.name}</h3>
 
               <p className="col-start-2 col-end-4 md:col-start-3 md:col-end-4" style={{
