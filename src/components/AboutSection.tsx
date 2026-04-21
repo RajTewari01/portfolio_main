@@ -26,15 +26,6 @@ export default function AboutSection() {
   const maskRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [maskP, setMaskP] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mql.matches);
-    const cb = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mql.addEventListener("change", cb);
-    return () => mql.removeEventListener("change", cb);
-  }, []);
 
   // ─── Scroll-driven mask reveal using element position ─────────────────
   useEffect(() => {
@@ -99,120 +90,7 @@ export default function AboutSection() {
 
   return (
     <section id="about" ref={sectionRef} style={{ position: "relative" }}>
-      {isMobile ? (
-        // ─── MOBILE LUXURY LAYOUT ───
-        <div style={{ background: "#080808", color: "#fff", paddingTop: 80, paddingBottom: 80, position: "relative", overflow: "hidden" }}>
-          {/* Subtle luxurious background accent */}
-          <div style={{
-            position: "absolute", top: 0, left: 0, right: 0, height: 400,
-            background: "radial-gradient(ellipse at top, rgba(201,169,110,0.15) 0%, transparent 70%)",
-            pointerEvents: "none"
-          }} />
-          
-          <div className="section-pad-x" style={{ position: "relative", zIndex: 2 }}>
-            <div style={{
-              display: "flex", alignItems: "center", gap: 10,
-              fontFamily: "monospace", fontSize: 10, letterSpacing: "0.25em",
-              color: "rgba(255,255,255,0.4)", marginBottom: 24,
-            }}>
-              <span style={{ color: "#C9A96E", fontWeight: 700 }}>02</span>
-              <span style={{ width: 24, height: 1, background: "#C9A96E", opacity: 0.5, display: "inline-block" }} />
-              <span>THE ARCHITECT</span>
-            </div>
-
-            <h2 style={{
-              fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-              fontSize: "12vw",
-              fontWeight: 700, color: "#fff",
-              lineHeight: 1.1, letterSpacing: "-0.02em",
-              marginBottom: 32,
-            }}>
-              Building<br />
-              <em style={{ fontWeight: 400, color: "#C9A96E" }}>The Future</em><br />
-              Layer.
-            </h2>
-
-            <p style={{
-              fontFamily: "monospace", fontSize: 13, color: "rgba(255,255,255,0.7)",
-              lineHeight: 1.8, marginBottom: 48,
-              borderLeft: "2px solid #C9A96E", paddingLeft: 16,
-            }}>
-              I operate at the bleeding edge of engineering and creativity.
-              Whether it&apos;s orchestrating high-throughput LangChain agent systems,
-              deploying centimeter-level computer vision models, or crafting
-              60fps cross-platform mobile applications.
-            </p>
-
-            <div style={{
-              borderRadius: "16px 16px 0 0", overflow: "hidden",
-              position: "relative", aspectRatio: "3/4", marginBottom: 40,
-              boxShadow: "0 20px 40px rgba(0,0,0,0.5)"
-            }}>
-              <Image src="/profile.jpg" alt="Biswadeep Tewari" fill
-                style={{ objectFit: "cover", filter: "grayscale(0.3) contrast(1.1)" }}
-              />
-              <div style={{
-                position: "absolute", inset: 0,
-                background: "linear-gradient(to top, #080808 0%, transparent 40%)",
-              }} />
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 48 }}>
-              <div style={{
-                background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: 20,
-                border: "1px solid rgba(255,255,255,0.05)",
-              }}>
-                <p style={{ fontSize: 36, fontWeight: 900, color: "#fff", lineHeight: 1 }}>
-                  3<span style={{ color: "#C9A96E" }}>+</span>
-                </p>
-                <p style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.1em", color: "#888", marginTop: 8, textTransform: "uppercase" }}>Years Active</p>
-              </div>
-              <div style={{
-                background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: 20,
-                border: "1px solid rgba(255,255,255,0.05)",
-              }}>
-                <p style={{ fontSize: 36, fontWeight: 900, color: "#fff", lineHeight: 1 }}>
-                  15<span style={{ color: "#C9A96E" }}>+</span>
-                </p>
-                <p style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.1em", color: "#888", marginTop: 8, textTransform: "uppercase" }}>Systems Shipped</p>
-              </div>
-            </div>
-
-            <div>
-              <div style={{
-                display: "flex", alignItems: "center", gap: 10,
-                fontFamily: "monospace", fontSize: 10, letterSpacing: "0.25em",
-                color: "rgba(255,255,255,0.4)", marginBottom: 24,
-              }}>
-                <span style={{ color: "#C9A96E", fontWeight: 700 }}>SKILLS</span>
-                <span style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-                {skills.map((s, i) => (
-                  <div key={i} style={{ paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                    <span style={{
-                      fontFamily: "monospace", fontSize: 10, letterSpacing: "0.15em",
-                      color: "#C9A96E", textTransform: "uppercase", display: "block", marginBottom: 12
-                    }}>{s.group}</span>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {s.tech.map((tech, j) => (
-                        <span key={j} style={{
-                          fontSize: 13, color: "rgba(255,255,255,0.8)",
-                          background: "rgba(255,255,255,0.05)", padding: "6px 12px", borderRadius: 20,
-                        }}>{tech}</span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        // ─── DESKTOP PARALLAX REVEAL LAYOUT ───
-        <>
-          {/* ═══ EFFECT 2: SVG MASK REVEAL ═══ */}
+      {/* ═══ EFFECT 2: SVG MASK REVEAL ═══ */}
       <div ref={maskWrapRef} style={{ position: "relative", height: "150vh", overflow: "hidden" }}>
         {/* Base (seen before reveal) */}
         <div style={{
@@ -443,8 +321,6 @@ export default function AboutSection() {
           <path d="M0,30 C360,90 1080,0 1440,60 L1440,90 L0,90 Z" fill="#080808" />
         </svg>
       </div>
-      </>
-      )}
     </section>
   );
 }

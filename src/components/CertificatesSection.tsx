@@ -251,7 +251,7 @@ export default function CertificatesSection() {
                   background: "rgba(0,0,0,0.5)",
                 }}>
                   <iframe 
-                    src={!origin.includes("localhost") ? `https://docs.google.com/viewer?url=${encodeURIComponent(origin + encodeURI(cert.credential_url))}&embedded=true` : `${encodeURI(cert.credential_url)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
+                    src={!origin.includes("localhost") ? `https://docs.google.com/viewer?url=${encodeURIComponent(origin + cert.credential_url)}&embedded=true` : `${cert.credential_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
                     style={{ width: "200%", height: "200%", border: "none", pointerEvents: "none", transform: "scale(0.5)", transformOrigin: "0 0" }} 
                     title={cert.title}
                   />
