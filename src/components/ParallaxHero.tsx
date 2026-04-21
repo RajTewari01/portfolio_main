@@ -346,17 +346,17 @@ export default function ParallaxHero() {
           height: "100%", alignItems: "center",
         }}>
           {/* Text */}
-          <div className="w-full md:w-[55%] pt-[110px] md:pt-[60px]" style={{
+          <div className="w-full md:w-[55%] pt-[100px] md:pt-[60px]" style={{
             display: "flex", flexDirection: "column",
             justifyContent: "center",
-            paddingLeft: "clamp(20px, 5vw, 56px)",
-            paddingRight: "clamp(20px, 4vw, 60px)",
-            paddingBottom: "clamp(20px, 4vw, 60px)",
+            paddingLeft: "clamp(24px, 6vw, 56px)",
+            paddingRight: "clamp(24px, 6vw, 60px)",
+            paddingBottom: "clamp(32px, 6vw, 60px)",
           }}>
             <div style={{
               display: "flex", alignItems: "center", gap: 10,
-              fontFamily: "monospace", fontSize: 9, letterSpacing: "0.28em",
-              color: "rgba(0,0,0,0.28)", marginBottom: "clamp(12px, 2vw, 22px)",
+              fontFamily: "monospace", fontSize: 10, letterSpacing: "0.28em",
+              color: "rgba(0,0,0,0.35)", marginBottom: "clamp(12px, 2vw, 22px)",
             }}>
               <span style={{ color: "#C9A96E", fontWeight: 700 }}>01</span>
               <span style={{ width: 28, height: 1, background: "#C9A96E", opacity: 0.5, display: "inline-block" }} />
@@ -365,21 +365,21 @@ export default function ParallaxHero() {
 
             <h2 style={{
               fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-              fontSize: "clamp(26px, 4.5vw, 50px)",
-              fontWeight: 700, color: "#1a1a1a",
-              lineHeight: 1.05, letterSpacing: "-0.025em",
-              marginBottom: "clamp(14px, 3vw, 28px)",
+              fontSize: "clamp(42px, 11vw, 64px)",
+              fontWeight: 700, color: "#111",
+              lineHeight: 1.05, letterSpacing: "-0.02em",
+              marginBottom: "clamp(20px, 4vw, 32px)",
               wordBreak: "break-word",
             }}>
               Building the<br />
-              <em style={{ fontWeight: 400 }}>impossible</em><br />
+              <em style={{ fontWeight: 400, color: "#C9A96E" }}>impossible</em><br />
               layer by layer.
             </h2>
 
             <p style={{
-              fontFamily: "monospace", fontSize: "clamp(10px, 1.2vw, 12px)", color: "#666",
-              lineHeight: 2, maxWidth: 420,
-              borderLeft: "2px solid #C9A96E", paddingLeft: 16,
+              fontFamily: "monospace", fontSize: "clamp(12px, 3.2vw, 13px)", color: "#444",
+              lineHeight: 1.8, maxWidth: 460,
+              borderLeft: "2px solid #C9A96E", paddingLeft: 18,
             }}>
               I operate at the bleeding edge of engineering and creativity.
               Whether it&apos;s orchestrating high-throughput LangChain agent systems,
@@ -389,38 +389,50 @@ export default function ParallaxHero() {
 
             {/* Location info */}
             <div style={{
-              marginTop: "clamp(16px, 3vw, 32px)", fontFamily: "monospace",
-              fontSize: 10, color: "#aaa", letterSpacing: "0.1em",
+              marginTop: "clamp(24px, 4vw, 32px)", fontFamily: "monospace",
+              fontSize: 10, color: "#888", letterSpacing: "0.15em",
             }}>
               <span>Location: IND · Lat: 22.5726° N · Lon: 88.3639° E</span>
             </div>
           </div>
 
-          {/* Image — compact on mobile, sidebar on desktop */}
-          <div className="w-full md:w-auto mx-4 md:mx-0 mb-4 md:mb-0 rounded-xl md:rounded-none md:rounded-l-xl overflow-hidden relative" style={{
-            flex: "0 0 40%",
-            maxHeight: "200px",
-            boxShadow: "-20px 0 60px rgba(0,0,0,0.12)",
+          {/* Image — expansive on mobile, sidebar on desktop */}
+          <div className="w-full md:w-auto px-6 md:px-0 mb-12 md:mb-0 relative" style={{
+            flex: "0 0 45%",
           }}>
             <style>{`
+              .architect-img-wrap { 
+                width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center; border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+              }
               @media (min-width: 768px) {
-                .architect-img-wrap { max-height: none !important; margin: 40px 0 80px !important; }
+                .architect-img-wrap { aspect-ratio: auto; height: 100vh; border-radius: 24px 0 0 24px; box-shadow: -20px 0 60px rgba(0,0,0,0.12); margin: 0; }
               }
             `}</style>
-            <Image src="/profile.jpg" alt="Biswadeep Tewari" width={800} height={600}
-              className="architect-img-wrap"
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
-            />
-            <div style={{
-              position: "absolute", inset: 0,
-              background: "linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.2))",
-            }} />
-            <div style={{
-              position: "absolute", bottom: 20, left: 20,
-              fontFamily: "monospace", fontSize: 9, color: "rgba(255,255,255,0.55)",
-              letterSpacing: "0.2em", background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(8px)", padding: "6px 10px", borderRadius: 3,
-            }}>MAKAUT UNIVERSITY · WEST BENGAL</div>
+            
+            <div className="relative overflow-hidden architect-img-container" style={{
+               borderRadius: "16px",
+               boxShadow: "0 24px 50px rgba(0,0,0,0.15)",
+            }}>
+              <style>{`
+                @media (min-width: 768px) {
+                  .architect-img-container { border-radius: 24px 0 0 24px !important; margin-top: 40px; margin-bottom: 80px; }
+                }
+              `}</style>
+              <Image src="/profile.jpg" alt="Biswadeep Tewari" width={800} height={600}
+                className="architect-img-wrap"
+              />
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.25))",
+                pointerEvents: "none",
+              }} />
+              <div style={{
+                position: "absolute", bottom: 16, left: 16,
+                fontFamily: "monospace", fontSize: 8, color: "rgba(255,255,255,0.7)",
+                letterSpacing: "0.2em", background: "rgba(0,0,0,0.4)",
+                backdropFilter: "blur(12px)", padding: "6px 12px", borderRadius: 4,
+              }}>MAKAUT UNIVERSITY</div>
+            </div>
           </div>
         </div>
 
@@ -429,7 +441,7 @@ export default function ParallaxHero() {
           position: "absolute", bottom: -1, left: 0, right: 0,
           width: "100%", height: 90, zIndex: 4,
         }}>
-          <path d="M0,0 C240,90 720,0 1440,60 L1440,90 L0,90 Z" fill="#080808" />
+           <path d="M0,0 C240,90 720,0 1440,60 L1440,90 L0,90 Z" fill="#080808" />
         </svg>
       </div>
     </div>
