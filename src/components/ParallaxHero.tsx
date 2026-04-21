@@ -182,7 +182,7 @@ export default function ParallaxHero() {
                 color: "#fff",
                 lineHeight: 0.88,
                 letterSpacing: "-0.025em",
-                marginBottom: 4,
+                marginBottom: 2,
                 display: "flex", overflow: "hidden",
               }}
             >
@@ -198,7 +198,7 @@ export default function ParallaxHero() {
                 fontWeight: 900,
                 lineHeight: 0.88,
                 letterSpacing: "-0.025em",
-                marginBottom: 30,
+                marginBottom: "clamp(12px, 3vw, 30px)",
                 display: "flex", overflow: "hidden",
               }}
             >
@@ -225,7 +225,7 @@ export default function ParallaxHero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 2.5 }}
-              style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, marginTop: 24 }}
+              style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "clamp(6px, 1.5vw, 12px)", marginTop: "clamp(12px, 3vw, 24px)" }}
             >
               {[
                 { href: "https://www.linkedin.com/in/raj-tewari-9a93212a3/", label: "LinkedIn" },
@@ -335,9 +335,9 @@ export default function ParallaxHero() {
               </a>
             </motion.div>
 
-            {/* Scroll indicator */}
-            <div className="fade-in fd4" style={{
-              display: "flex", alignItems: "center", gap: 10,
+            {/* Scroll indicator — hidden on mobile to save space */}
+            <div className="fade-in fd4 hidden md:flex" style={{
+              alignItems: "center", gap: 10,
               marginTop: 24,
               fontFamily: "monospace", fontSize: 9,
               color: "rgba(255,255,255,0.22)", letterSpacing: "0.2em",

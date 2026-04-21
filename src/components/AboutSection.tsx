@@ -22,15 +22,10 @@ const skills = [
 
 export default function AboutSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const maskWrapRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const [maskProgress, setMaskProgress] = useState(0);
 
   // ─── GSAP animations ────────────────────────────────────────────────
   useEffect(() => {
@@ -65,23 +60,29 @@ export default function AboutSection() {
           }
         );
       }
+      // Mask reveal via ScrollTrigger (works on all devices)
+      if (maskWrapRef.current) {
+        ScrollTrigger.create({
+          trigger: maskWrapRef.current,
+          start: "top 80%",
+          end: "top -20%",
+          scrub: true,
+          onUpdate: (self) => setMaskProgress(self.progress),
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // ─── SVG Mask Reveal calculation (uses real DOM position) ─────────────
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const sectionEl = sectionRef.current;
-  const sectionTop = sectionEl ? sectionEl.getBoundingClientRect().top + window.scrollY : vh * 2;
-  const raw = map(scrollY, sectionTop - vh * 0.5, sectionTop + vh * 0.6, 0, 1);
-  const eased = easeOutCubic(raw);
+  // ─── Mask radius from GSAP progress ──────────────────────────────────
+  const eased = easeOutCubic(maskProgress);
   const maskR = eased * 160;
 
   return (
     <section id="about" ref={sectionRef} style={{ position: "relative" }}>
       {/* ═══ EFFECT 2: SVG MASK REVEAL ═══ */}
-      <div style={{ position: "relative", height: "150vh", overflow: "hidden" }}>
+      <div ref={maskWrapRef} style={{ position: "relative", height: "150vh", overflow: "hidden" }}>
         {/* Base (seen before reveal) */}
         <div style={{
           position: "absolute", inset: 0,
@@ -112,7 +113,7 @@ export default function AboutSection() {
           style={{
             position: "absolute", inset: 0,
             clipPath: `circle(${maskR}vmin at 50% 50%)`,
-            opacity: map(raw, 0, 0.05, 0, 1),
+            opacity: map(maskProgress, 0, 0.05, 0, 1),
             willChange: "clip-path, opacity",
           }}
         >
