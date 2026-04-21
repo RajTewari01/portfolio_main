@@ -312,13 +312,6 @@ export default function AboutSection() {
           </div>
         </div>
 
-        {/* Wave divider to next section */}
-        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{
-          position: "absolute", bottom: -2, left: 0, right: 0,
-          width: "100%", height: 90, zIndex: 10,
-        }}>
-          <path d="M0,30 C360,90 1080,0 1440,60 L1440,90 L0,90 Z" fill="#080808" />
-        </svg>
       </div>
     </section>
   );

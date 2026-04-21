@@ -128,6 +128,13 @@ export default function ProjectsSection() {
       position: "relative", minHeight: "150vh",
       background: "#080808", overflow: "hidden",
     }}>
+      {/* ── TOP WAVE from About section (cream curves into image) ── */}
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{
+        position: "absolute", top: -1, left: 0, right: 0,
+        width: "100%", height: 90, zIndex: 10,
+      }}>
+        <path d="M0,0 L1440,0 L1440,60 C1080,0 360,90 0,30 Z" fill="#F4EEE4" />
+      </svg>
       {/* ── PARALLAX BG IMAGE ── */}
       <div
         ref={bgRef}
