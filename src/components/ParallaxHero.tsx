@@ -362,18 +362,19 @@ export default function ParallaxHero() {
           zIndex: 5,
         }} />
 
-        <div style={{
-          display: "flex", height: "100%", paddingTop: 60, alignItems: "center",
+        <div className="flex flex-col md:flex-row" style={{
+          height: "100%", paddingTop: "clamp(30px, 5vw, 60px)", alignItems: "center",
         }}>
           {/* Text */}
-          <div style={{
-            flex: "0 0 55%", display: "flex", flexDirection: "column",
-            justifyContent: "center", padding: "20px 48px 60px 56px",
+          <div className="w-full md:w-[55%]" style={{
+            display: "flex", flexDirection: "column",
+            justifyContent: "center",
+            padding: "clamp(12px, 3vw, 20px) clamp(20px, 5vw, 56px) clamp(20px, 4vw, 60px)",
           }}>
             <div style={{
               display: "flex", alignItems: "center", gap: 10,
               fontFamily: "monospace", fontSize: 9, letterSpacing: "0.28em",
-              color: "rgba(0,0,0,0.28)", marginBottom: 22,
+              color: "rgba(0,0,0,0.28)", marginBottom: "clamp(12px, 2vw, 22px)",
             }}>
               <span style={{ color: "#C9A96E", fontWeight: 700 }}>01</span>
               <span style={{ width: 28, height: 1, background: "#C9A96E", opacity: 0.5, display: "inline-block" }} />
@@ -382,40 +383,38 @@ export default function ParallaxHero() {
 
             <h2 style={{
               fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-              fontSize: "clamp(28px, 4.5vw, 50px)",
+              fontSize: "clamp(24px, 4.5vw, 50px)",
               fontWeight: 700, color: "#1a1a1a",
               lineHeight: 1.05, letterSpacing: "-0.025em",
-              marginBottom: 28,
+              marginBottom: "clamp(16px, 3vw, 28px)",
             }}>
-              Building the<br />
-              <em style={{ fontWeight: 400 }}>impossible</em><br />
+              Deconstructing<br />
+              <em style={{ fontWeight: 400 }}>the impossible</em><br />
               layer by layer.
             </h2>
 
             <p style={{
-              fontFamily: "monospace", fontSize: 12, color: "#666",
+              fontFamily: "monospace", fontSize: "clamp(10px, 1.2vw, 12px)", color: "#666",
               lineHeight: 2, maxWidth: 420,
               borderLeft: "2px solid #C9A96E", paddingLeft: 16,
             }}>
               I operate at the bleeding edge of engineering and creativity.
               Whether it&apos;s orchestrating high-throughput LangChain agent systems,
               deploying centimeter-level computer vision models, or crafting
-              60fps cross-platform mobile applications — the motto remains absolute:
-              <br />
-              <span style={{ color: "#C9A96E", fontWeight: 600 }}>[ Build → Ship → Learn → Repeat ]</span>
+              60fps cross-platform mobile applications.
             </p>
 
             {/* Location info */}
             <div style={{
-              marginTop: 32, fontFamily: "monospace",
+              marginTop: "clamp(16px, 3vw, 32px)", fontFamily: "monospace",
               fontSize: 10, color: "#aaa", letterSpacing: "0.1em",
             }}>
               <span>Location: IND · Lat: 22.5726° N · Lon: 88.3639° E</span>
             </div>
           </div>
 
-          {/* Image */}
-          <div style={{
+          {/* Image — hidden on very small phones, visible on larger screens */}
+          <div className="hidden md:block" style={{
             flex: "0 0 40%", margin: "40px 0 80px",
             borderRadius: "12px 0 0 12px", overflow: "hidden",
             position: "relative",
