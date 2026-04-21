@@ -152,10 +152,7 @@ export default function ParallaxHero() {
           {/* Top bar removed to prevent overlap with the actual global Navbar.tsx */}
 
           {/* Hero content */}
-          <div style={{
-            position: "absolute", bottom: 0, left: 0, right: 0,
-            padding: "0 clamp(16px, 5vw, 52px) clamp(24px, 5vw, 52px)",
-          }}>
+          <div className="absolute left-0 right-0 bottom-[10vh] md:bottom-0 px-4 md:px-[52px] pb-4 md:pb-[52px]">
             <div className="fade-in" style={{
               display: "flex", alignItems: "center", gap: 14,
               marginBottom: 18,
@@ -174,7 +171,7 @@ export default function ParallaxHero() {
 
             <h1
               ref={textRef1}
-              className="font-playfair text-[clamp(56px,11vw,108px)] font-black text-white leading-[0.88] tracking-[-0.025em] mb-[2px] md:mb-1 flex overflow-hidden fade-in fd2"
+              className="font-playfair text-[clamp(42px,11vw,108px)] font-black text-white leading-[0.88] tracking-[-0.025em] mb-[2px] md:mb-1 flex overflow-hidden fade-in fd2"
             >
               {"BISWADEEP".split("").map((char, i) => (
                 <span key={`first-${i}`} className="char-first inline-block">{char}</span>
@@ -182,7 +179,7 @@ export default function ParallaxHero() {
             </h1>
             <h1
               ref={textRef2}
-              className="font-playfair text-[clamp(56px,11vw,108px)] font-black leading-[0.88] tracking-[-0.025em] mb-3 md:mb-[30px] flex overflow-hidden"
+              className="font-playfair text-[clamp(42px,11vw,108px)] font-black leading-[0.88] tracking-[-0.025em] mb-3 md:mb-[30px] flex flex-wrap overflow-hidden"
             >
               {"TEWARI".split("").map((char, i) => (
                 <span key={`last-${i}`} className="char-last inline-block opacity-0" style={{ color: "#C9A96E", fontStyle: "italic", fontWeight: 400 }}>{char}</span>
