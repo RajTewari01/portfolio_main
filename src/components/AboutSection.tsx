@@ -25,13 +25,30 @@ export default function AboutSection() {
   const maskWrapRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
+  const [maskP, setMaskP] = useState(0);
 
+  // ─── Scroll-driven mask reveal using element position ─────────────────
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
+    let raf: number;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (!maskWrapRef.current) return;
+        const rect = maskWrapRef.current.getBoundingClientRect();
+        const vh = window.innerHeight;
+        // Progress: 0 when element top hits 80% of viewport,
+        //           1 when element top is 20% above viewport top
+        const progress = clamp((vh * 0.8 - rect.top) / (vh * 1.0), 0, 1);
+        setMaskP(progress);
+      });
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    onScroll(); // initial calculation
+    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); };
   }, []);
+
+  // Circle radius: 0 → 150 vmin (matching parallax-demo reference)
+  const maskR = map(maskP, 0, 1, 0, 150);
 
   // ─── GSAP animations ────────────────────────────────────────────────
   useEffect(() => {
@@ -66,17 +83,10 @@ export default function AboutSection() {
           }
         );
       }
-      }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
-
-  // ─── SVG Mask Reveal calculation (native math) ───────────────────────
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const S1_S2_END = vh * 2; // Matches height of ParallaxHero (200vh)
-  const maskP = map(scrollY, S1_S2_END - vh * 0.2, S1_S2_END + vh * 0.6, 0, 1);
-  const maskR = easeOutCubic(maskP) * 160;
 
   return (
     <section id="about" ref={sectionRef} style={{ position: "relative" }}>
