@@ -33,6 +33,17 @@ export default function CertificatesSection() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [loaded, setLoaded] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+    const mql = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mql.matches);
+    const cb = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", cb);
+    return () => mql.removeEventListener("change", cb);
+  }, []);
 
   // ─── Fetch from Supabase ─────────────────────────────────────────────
   useEffect(() => {
@@ -182,7 +193,7 @@ export default function CertificatesSection() {
           gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
           gap: 16,
         }}>
-          {filtered.slice(0, showAll ? undefined : 16).map((cert) => (
+          {filtered.slice(0, showAll ? undefined : (isMobile ? 8 : 16)).map((cert) => (
             <div
               key={cert.id}
               className="cert-card"
@@ -240,7 +251,7 @@ export default function CertificatesSection() {
                   background: "rgba(0,0,0,0.5)",
                 }}>
                   <iframe 
-                    src={`${cert.credential_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
+                    src={!origin.includes("localhost") ? `https://docs.google.com/viewer?url=${encodeURIComponent(origin + cert.credential_url)}&embedded=true` : `${cert.credential_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
                     style={{ width: "200%", height: "200%", border: "none", pointerEvents: "none", transform: "scale(0.5)", transformOrigin: "0 0" }} 
                     title={cert.title}
                   />
@@ -289,7 +300,7 @@ export default function CertificatesSection() {
         </div>
 
         {/* View All Button */}
-        {!showAll && filtered.length > 16 && (
+        {!showAll && filtered.length > (isMobile ? 8 : 16) && (
           <div style={{ display: "flex", justifyContent: "center", marginTop: 48 }}>
             <button
               onClick={() => setShowAll(true)}

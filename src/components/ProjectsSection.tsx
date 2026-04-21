@@ -26,6 +26,20 @@ const fallbackProjects: Project[] = [
     github_url: "https://github.com/RajTewari01",
     created_at: "",
   },
+  {
+    id: "3",
+    name: "Autonoma System",
+    description: "Highly robust AI sub-agent orchestration framework leveraging LLMs for automated task resolving and error tracing.",
+    github_url: "https://github.com/RajTewari01",
+    created_at: "",
+  },
+  {
+    id: "4",
+    name: "V-Engine Analytics",
+    description: "Enterprise class data visualization suite optimized for VRAM-constrained hardware, built on Cython and Pandas.",
+    github_url: "https://github.com/RajTewari01",
+    created_at: "",
+  },
 ];
 
 // ─── Math utils ─────────────────────────────────────────────────────────

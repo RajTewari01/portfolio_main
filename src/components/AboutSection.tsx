@@ -196,7 +196,7 @@ export default function AboutSection() {
         padding: "80px 0 120px", overflow: "hidden",
       }}>
         <div className="section-pad-x">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left: Stats */}
             <div ref={statsRef}>
               <div style={{
@@ -294,15 +294,6 @@ export default function AboutSection() {
                 ))}
               </div>
 
-              {/* Motto */}
-              <div style={{
-                marginTop: 32, fontFamily: "monospace", fontSize: 11,
-                color: "#C9A96E", letterSpacing: "0.15em", textTransform: "uppercase",
-                background: "rgba(201,169,110,0.08)", padding: "12px 16px",
-                borderRadius: 8, border: "1px solid rgba(201,169,110,0.15)",
-              }}>
-                [ Build → Ship → Learn → Repeat ]
-              </div>
             </div>
           </div>
         </div>
