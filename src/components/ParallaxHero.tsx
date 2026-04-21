@@ -174,17 +174,7 @@ export default function ParallaxHero() {
 
             <h1
               ref={textRef1}
-              className="fade-in fd2"
-              style={{
-                fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-                fontSize: "clamp(56px, 11vw, 108px)",
-                fontWeight: 900,
-                color: "#fff",
-                lineHeight: 0.88,
-                letterSpacing: "-0.025em",
-                marginBottom: 2,
-                display: "flex", overflow: "hidden",
-              }}
+              className="font-playfair text-[clamp(56px,11vw,108px)] font-black text-white leading-[0.88] tracking-[-0.025em] mb-[2px] md:mb-1 flex overflow-hidden fade-in fd2"
             >
               {"BISWADEEP".split("").map((char, i) => (
                 <span key={`first-${i}`} className="char-first inline-block">{char}</span>
@@ -192,15 +182,7 @@ export default function ParallaxHero() {
             </h1>
             <h1
               ref={textRef2}
-              style={{
-                fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-                fontSize: "clamp(56px, 11vw, 108px)",
-                fontWeight: 900,
-                lineHeight: 0.88,
-                letterSpacing: "-0.025em",
-                marginBottom: "clamp(12px, 3vw, 30px)",
-                display: "flex", overflow: "hidden",
-              }}
+              className="font-playfair text-[clamp(56px,11vw,108px)] font-black leading-[0.88] tracking-[-0.025em] mb-3 md:mb-[30px] flex overflow-hidden"
             >
               {"TEWARI".split("").map((char, i) => (
                 <span key={`last-${i}`} className="char-last inline-block opacity-0" style={{ color: "#C9A96E", fontStyle: "italic", fontWeight: 400 }}>{char}</span>
@@ -225,7 +207,7 @@ export default function ParallaxHero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 2.5 }}
-              style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "clamp(6px, 1.5vw, 12px)", marginTop: "clamp(12px, 3vw, 24px)" }}
+              className="flex flex-wrap items-center gap-[6px] md:gap-3 mt-3 md:mt-6"
             >
               {[
                 { href: "https://www.linkedin.com/in/raj-tewari-9a93212a3/", label: "LinkedIn" },
@@ -363,13 +345,15 @@ export default function ParallaxHero() {
         }} />
 
         <div className="flex flex-col md:flex-row" style={{
-          height: "100%", paddingTop: "clamp(30px, 5vw, 60px)", alignItems: "center",
+          height: "100%", alignItems: "center",
         }}>
           {/* Text */}
-          <div className="w-full md:w-[55%]" style={{
+          <div className="w-full md:w-[55%] pt-[110px] md:pt-[60px]" style={{
             display: "flex", flexDirection: "column",
             justifyContent: "center",
-            padding: "clamp(12px, 3vw, 20px) clamp(20px, 5vw, 56px) clamp(20px, 4vw, 60px)",
+            paddingLeft: "clamp(20px, 5vw, 56px)",
+            paddingRight: "clamp(20px, 4vw, 60px)",
+            paddingBottom: "clamp(20px, 4vw, 60px)",
           }}>
             <div style={{
               display: "flex", alignItems: "center", gap: 10,
@@ -383,13 +367,14 @@ export default function ParallaxHero() {
 
             <h2 style={{
               fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-              fontSize: "clamp(24px, 4.5vw, 50px)",
+              fontSize: "clamp(26px, 4.5vw, 50px)",
               fontWeight: 700, color: "#1a1a1a",
               lineHeight: 1.05, letterSpacing: "-0.025em",
-              marginBottom: "clamp(16px, 3vw, 28px)",
+              marginBottom: "clamp(14px, 3vw, 28px)",
+              wordBreak: "break-word",
             }}>
-              Deconstructing<br />
-              <em style={{ fontWeight: 400 }}>the impossible</em><br />
+              Building the<br />
+              <em style={{ fontWeight: 400 }}>impossible</em><br />
               layer by layer.
             </h2>
 

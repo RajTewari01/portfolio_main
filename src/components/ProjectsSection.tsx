@@ -201,12 +201,8 @@ export default function ProjectsSection() {
               href={p.github_url}
               target="_blank"
               rel="noreferrer"
-              className="project-row"
+              className="project-row grid grid-cols-[40px_1fr_40px] md:grid-cols-[60px_1fr_60px] gap-x-4 md:gap-x-8 gap-y-3 items-start md:items-center"
               style={{
-                display: "grid",
-                gridTemplateColumns: "48px 1fr 48px",
-                gap: "12px 16px",
-                alignItems: "start",
                 padding: "28px 0", position: "relative",
                 textDecoration: "none", color: "inherit",
                 borderTop: "1px solid rgba(255,255,255,0.04)",
@@ -222,8 +218,8 @@ export default function ProjectsSection() {
                 textAlign: "center",
               }}>0{index + 1}</span>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <h3 style={{
+              <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8 w-full">
+                <h3 className="md:w-1/3" style={{
                   fontFamily: "var(--font-syne), sans-serif",
                   fontSize: "clamp(22px, 4vw, 52px)",
                   fontWeight: 800, letterSpacing: "-0.04em",
@@ -231,7 +227,7 @@ export default function ProjectsSection() {
                   lineHeight: 0.9, transition: "transform 0.5s",
                 }}>{p.name}</h3>
 
-                <p style={{
+                <p className="md:w-2/3" style={{
                   fontSize: "clamp(11px, 1.5vw, 13px)", color: "rgba(255,255,255,0.55)", fontWeight: 300,
                   lineHeight: 1.7,
                   background: "linear-gradient(135deg, rgba(10,10,10,0.7), rgba(20,18,14,0.6))",
