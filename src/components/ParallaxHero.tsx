@@ -142,8 +142,8 @@ export default function ParallaxHero() {
             opacity: 0.12, mixBlendMode: "overlay",
           }} />
 
-          {/* Fine border */}
-          <div style={{
+          {/* Fine border — desktop only */}
+          <div className="hidden md:block" style={{
             position: "absolute", inset: 24,
             border: "1px solid rgba(201,169,110,0.08)",
             borderRadius: 4, pointerEvents: "none",
