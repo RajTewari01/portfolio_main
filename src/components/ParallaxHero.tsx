@@ -71,7 +71,7 @@ export default function ParallaxHero() {
       }
 
       if (subtextRef.current) {
-        const textToType = "Full-Stack Engineer & AI/ML Architect — cloud-native systems, LLM agents, cross-platform apps.";
+        const textToType = "Full-Stack Engineer & Systems Architect. Building scalable software, APIs, and product experiences.";
         subtextRef.current.innerText = "";
         let i = 0;
         const typeWriter = () => {
@@ -365,14 +365,14 @@ export default function ParallaxHero() {
 
             <h2 style={{
               fontFamily: "var(--font-playfair), 'Playfair Display', serif",
-              fontSize: "clamp(42px, 11vw, 64px)",
+              fontSize: "clamp(36px, 10vw, 64px)",
               fontWeight: 700, color: "#111",
               lineHeight: 1.05, letterSpacing: "-0.02em",
               marginBottom: "clamp(20px, 4vw, 32px)",
               wordBreak: "break-word",
             }}>
-              Building the<br />
-              <em style={{ fontWeight: 400, color: "#C9A96E" }}>impossible</em><br />
+              Building robust<br />
+              <em style={{ fontWeight: 400, color: "#C9A96E" }}>software</em><br />
               layer by layer.
             </h2>
 
@@ -381,10 +381,9 @@ export default function ParallaxHero() {
               lineHeight: 1.8, maxWidth: 460,
               borderLeft: "2px solid #C9A96E", paddingLeft: 18,
             }}>
-              I operate at the bleeding edge of engineering and creativity.
-              Whether it&apos;s orchestrating high-throughput LangChain agent systems,
-              deploying centimeter-level computer vision models, or crafting
-              60fps cross-platform mobile applications.
+              I build production-grade applications that scale.
+              From architecting language model data pipelines and serving computer vision APIs, 
+              to shipping performant cross-platform mobile apps that users love.
             </p>
 
             {/* Location info */}

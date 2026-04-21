@@ -16,28 +16,28 @@ const fallbackProjects: Project[] = [
   {
     id: "1",
     name: "Spatial Tracer",
-    description: "PyTorch & OpenCV based realtime spatial computing module achieving sub-centimeter point tracking accuracy at 60fps.",
+    description: "Real-time object tracking with PyTorch and OpenCV. Handles spatial point mapping at 60fps with sub-centimeter precision.",
     github_url: "https://github.com/RajTewari01/spatial_tracer",
     created_at: "",
   },
   {
     id: "2",
-    name: "Portfolio Nexus",
-    description: "This very site — Next.js 16, Three.js GLSL shaders, GSAP cinematic animations, and parallax scroll effects.",
+    name: "Portfolio",
+    description: "This site. Built with Next.js 16, GSAP scroll animations, and parallax effects. Pulls data from Supabase.",
     github_url: "https://github.com/RajTewari01/portfolio",
     created_at: "",
   },
   {
     id: "3",
     name: "LeetCode Grind",
-    description: "Systematic problem-solving repository with optimized solutions across arrays, trees, graphs, and dynamic programming.",
+    description: "My DSA solutions — arrays, trees, graphs, DP. Clean implementations with time/space analysis.",
     github_url: "https://github.com/RajTewari01/leetcode",
     created_at: "",
   },
   {
     id: "4",
     name: "Neural Citadel",
-    description: "Subprocess-Isolated Multi-Modal AI architecture running entirely on a 4GB Consumer GPU.",
+    description: "Multi-model AI platform that runs on a 4GB GPU. Uses subprocess isolation to manage VRAM across 12 services and 60+ model of different kinds.",
     github_url: "https://github.com/RajTewari01/neural_citadel",
     created_at: "",
   },
@@ -190,7 +190,7 @@ export default function ProjectsSection() {
             fontFamily: "monospace", fontSize: 12, color: "rgba(255,255,255,0.5)",
             lineHeight: 1.8,
           }}>
-            Engineering is the art of constraint. These systems represent the intersection of complex high-performance backends and ruthless minimalist frontends.
+            A few things I've built and shipped. Backend-heavy systems, ML pipelines, and the occasional frontend that doesn't look like it was made in 2012.
           </p>
         </div>
 

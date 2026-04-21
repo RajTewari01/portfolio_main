@@ -177,8 +177,8 @@ export default function AboutSection() {
               hyphens: "auto"
             }}>
               Building<br />
-              <em style={{ fontWeight: 400, color: "#C9A96E" }}>The Future</em><br />
-              Layer.
+              <em style={{ fontWeight: 400, color: "#C9A96E" }}>Scalable</em><br />
+              Software.
             </h2>
 
             <p style={{
@@ -188,10 +188,9 @@ export default function AboutSection() {
               padding: "16px 24px", borderRadius: 8,
               border: "1px solid rgba(201,169,110,0.15)",
             }}>
-              I operate at the bleeding edge of engineering and creativity.
-              Whether it&apos;s orchestrating high-throughput LangChain agent systems,
-              deploying centimeter-level computer vision models, or crafting
-              60fps cross-platform mobile applications.
+              I focus on delivering clean, maintainable code and robust system architectures.
+              Whether implementing complex AI infrastructure, optimizing backend APIs, 
+              or building highly responsive user interfaces.
             </p>
           </div>
         </div>

@@ -99,9 +99,9 @@ export default function CertificatesSection() {
   const top4Issuers = sortedIssuers.slice(0, 4).map((e) => e[0]);
 
   const DYNAMIC_CATEGORIES = [
-    { key: "all", label: "ALL VAULTS" },
+    { key: "all", label: "ALL" },
     ...top4Issuers.map((i) => ({ key: i, label: i.toUpperCase() })),
-    ...(sortedIssuers.length > 4 ? [{ key: "other", label: "OTHER NETWORKS" }] : []),
+    ...(sortedIssuers.length > 4 ? [{ key: "other", label: "OTHER" }] : []),
   ];
 
   const filtered =
@@ -142,7 +142,7 @@ export default function CertificatesSection() {
           }}>
             <span style={{ color: "#C9A96E", fontWeight: 700 }}>04</span>
             <span style={{ width: 28, height: 1, background: "#C9A96E", opacity: 0.5, display: "inline-block" }} />
-            <span>CREDENTIALS VAULT</span>
+            <span>CERTIFICATIONS</span>
           </div>
 
           <h2 style={{
@@ -159,8 +159,7 @@ export default function CertificatesSection() {
             marginTop: 16, fontFamily: "monospace", fontSize: 12,
             color: "rgba(255,255,255,0.4)", maxWidth: 400, lineHeight: 1.8,
           }}>
-            {certificates.length} certificates & badges from leading AI organizations.
-            Stored dynamically via Supabase.
+            {certificates.length} certifications from Anthropic, Google, and others.
           </p>
         </div>
 
@@ -327,7 +326,7 @@ export default function CertificatesSection() {
                 e.currentTarget.style.borderColor = "rgba(201,169,110,0.3)";
               }}
             >
-              VIEW ALL VAULTS
+              VIEW ALL
             </button>
           </div>
         )}

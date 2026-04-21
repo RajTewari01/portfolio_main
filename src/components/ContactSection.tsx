@@ -96,8 +96,8 @@ export default function ContactSection() {
         color: "rgba(255,255,255,0.4)", maxWidth: 400,
         textAlign: "center", lineHeight: 1.8, marginBottom: 40,
       }}>
-        Whether you need a high-performance backend, a cinematic frontend,
-        or an AI agent integration — let&apos;s discuss your next project.
+        Got a project in mind, need a backend built, or looking for someone
+        who actually ships? Let&apos;s talk.
       </p>
 
       {/* Link Pills */}
