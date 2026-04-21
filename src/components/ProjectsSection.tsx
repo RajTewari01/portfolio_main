@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 // Old background: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1600&q=85&auto=format&fit=crop"
-const IMG_PARALLAX = "https://unsplash.com/photos/white-jellyfishes-swims-_AjqGGafofE?w=1600&q=85&auto=format&fit=crop";
+const IMG_PARALLAX = "https://images.unsplash.com/photo-1495012379376-194a416fcc5f?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 import { supabase, Project } from "@/lib/supabase";
 
