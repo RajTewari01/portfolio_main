@@ -10,12 +10,15 @@ import CertificatesSection from "@/components/CertificatesSection";
 import SkillsMarquee from "@/components/SkillsMarquee";
 import ContactSection from "@/components/ContactSection";
 import CustomCursor from "@/components/CustomCursor";
+import { useGame } from "@/components/game/GameContext";
 
 // Three.js canvas — dynamically imported, no SSR
 const ThreeCanvas = dynamic(() => import("@/components/ThreeCanvas"), { ssr: false });
+const LegacyGameWorld = dynamic(() => import("@/components/game/LegacyGameWorld"), { ssr: false });
 
 export default function Home() {
   const mainRef = useRef<HTMLDivElement>(null);
+  const { isGameMode } = useGame();
 
   // ─── Lenis smooth scroll ──────────────────────────────────────────────
   useEffect(() => {
@@ -43,18 +46,21 @@ export default function Home() {
       cancelAnimationFrame(raf);
       if (lenis) lenis.destroy();
     };
-  }, []);
+  }, [isGameMode]); // Restart/destroy if game mode changes
 
   return (
     <>
+      {/* Gamified 3D World — perfectly sandboxed vanilla engine */}
+      <LegacyGameWorld />
+
       {/* 3D WebGL background */}
-      <ThreeCanvas />
+      {!isGameMode && <ThreeCanvas />}
 
       {/* Global black overlay for depth */}
-      <div className="fixed inset-0 z-[1] bg-black/30 pointer-events-none" />
+      {!isGameMode && <div className="fixed inset-0 z-[1] bg-black/30 pointer-events-none" />}
 
       {/* Custom cursor */}
-      <CustomCursor />
+      {!isGameMode && <CustomCursor />}
 
       {/* Navigation */}
       <Navbar />

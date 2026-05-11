@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGame } from "./game/GameContext";
 
 const NAV_LINKS = [
   { label: "Work", href: "/#work" },
@@ -11,15 +12,22 @@ const NAV_LINKS = [
   { label: "Hire", href: "/hire" },
 ];
 
+// Separate so it doesn't get the same index styling
+const GAMIFIED_LABEL = "🎮 Gamified";
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isGameMode, enterGameMode } = useGame();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Hide full navbar in game mode (GameHUD takes over)
+  if (isGameMode) return null;
 
   return (
     <>
@@ -90,6 +98,14 @@ export default function Navbar() {
                 <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-500 ease-out" />
               </a>
             ))}
+            {/* Gamified button */}
+            <button
+              onClick={enterGameMode}
+              className="font-space-grotesk text-sm tracking-[0.15em] uppercase text-white/70 hover:text-[#C9A96E] transition-colors relative group flex items-center gap-2"
+            >
+              <span>{GAMIFIED_LABEL}</span>
+              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C9A96E] to-transparent scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-500 ease-out" />
+            </button>
           </div>
 
           {/* Mobile Toggle */}
@@ -128,6 +144,17 @@ export default function Navbar() {
                   {link.label}
                 </motion.a>
               ))}
+              {/* Gamified in mobile menu */}
+              <motion.button
+                onClick={() => { setMenuOpen(false); enterGameMode(); }}
+                initial={{ y: 40, opacity: 0, filter: "blur(10px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                transition={{ delay: 0.2 + NAV_LINKS.length * 0.08, duration: 0.6, ease: "circOut" }}
+                className="font-playfair text-[clamp(40px,10vw,80px)] font-black uppercase tracking-tighter text-[#C9A96E] hover:italic transition-colors"
+                style={{ background: "none", border: "none", cursor: "pointer" }}
+              >
+                🎮 Gamified
+              </motion.button>
             </div>
             
             <motion.p 

@@ -7,6 +7,7 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
+import { GameProvider } from "@/components/game/GameContext";
 import { Space_Grotesk, Syne, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
@@ -42,7 +43,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-black">
       <body className={`${spaceGrotesk.variable} ${syne.variable} ${playfair.variable} antialiased bg-black text-white selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden`}>
-        {children}
+        <GameProvider>
+          {children}
+        </GameProvider>
       </body>
     </html>
   );
