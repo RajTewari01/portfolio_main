@@ -38,8 +38,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=block" rel="stylesheet">
-  <script type="module" crossorigin src="/bruno-game/assets/index-BP2zY3-c.js"></script>
-  <link rel="stylesheet" crossorigin href="/bruno-game/assets/index-DB0qAhZJ.css">
+  <script type="module" crossorigin src="/bruno-game/assets/index-BB3UxQfG.js"></script>
+  <link rel="stylesheet" crossorigin href="/bruno-game/assets/index-ClfF1ecP.css">
 </head>
 <body>
 
@@ -88,17 +88,24 @@
 
     <!-- Environment Controls UI -->
     <div class="env-controls">
-        <button class="env-toggle-btn js-env-toggle">🌤️ Weather & Time</button>
-        <div class="env-panel js-env-panel">
+        <button class="env-toggle-btn js-env-toggle">⚙️ Settings</button>
+        <div class="env-panel js-env-panel is-collapsed">
+            <div class="env-group-title">Weather Control</div>
             <div class="env-group">
                 <button class="env-btn js-env-season" data-season="summer">Summer</button>
                 <button class="env-btn js-env-season" data-season="autumn">Autumn</button>
                 <button class="env-btn js-env-season" data-season="winter">Winter</button>
                 <button class="env-btn js-env-season" data-season="rainy">Rainy</button>
             </div>
+            
+            <div class="env-group-title">Time Settings</div>
             <div class="env-group">
                 <button class="env-btn js-env-time" data-time="day">Day</button>
+                <button class="env-btn js-env-time" data-time="afternoon">Afternoon</button>
                 <button class="env-btn js-env-time is-active" data-time="night">Night</button>
+            </div>
+            <div class="env-group">
+                <button class="env-btn js-env-time-auto" data-auto="false">Auto-Time: OFF</button>
             </div>
         </div>
     </div>
