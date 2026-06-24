@@ -33,6 +33,9 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Biswadeep Tewari — Digital Nexus",
   description: "Portfolio of Biswadeep Tewari. Full-Stack Engineer, AI/ML Architect, and Mobile Developer. Engineering the impossible.",
+  verification: {
+    google: "uro1j8pmJ9uk40HfXpBeaA_PmA3S6m3_APoDspkCRJQ",
+  },
 };
 
 export default function RootLayout({
